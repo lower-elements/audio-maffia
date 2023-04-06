@@ -53,7 +53,7 @@ from . import os_tools, consts
 
 dll_name = "openal.dll"
 if os_tools.get_os() == consts.OS_LINUX:
-    dll_name = "openal.so"
+    dll_name = "libopenal.so"
 elif os_tools.get_os() == consts.OS_MAC:
     dll_name = "openal.dylib"
 
@@ -71,7 +71,7 @@ class c_void(Structure):
 # al
 class lib_openal(object):
     def __init__(self):
-        self._lib = ctypes.CDLL(os.path.realpath(dll_name))
+        self._lib = ctypes.CDLL(dll_name)
 
         self._int_types = (c_int16, c_int32)
         if hasattr(ctypes, "c_int64"):
@@ -1079,7 +1079,7 @@ class lib_openal(object):
 # alc
 class lib_alc(object):
     def __init__(self):
-        self._lib = ctypes.CDLL(os.path.realpath(dll_name))
+        self._lib = ctypes.CDLL(dll_name)
 
         self._int_types = (c_int16, c_int32)
         if hasattr(ctypes, "c_int64"):
@@ -1482,7 +1482,7 @@ class lib_alc(object):
 # efx
 class lib_efx(object):
     def __init__(self):
-        self._lib = ctypes.CDLL(os.path.realpath(dll_name))
+        self._lib = ctypes.CDLL(dll_name)
         self._int_types = (c_int16, c_int32)
         if hasattr(ctypes, "c_int64"):
             # Some builds of ctypes apparently do not have c_int64
