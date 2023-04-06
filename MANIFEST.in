@@ -1,0 +1,3 @@
+include LICENSE README.md
+include pyproject.toml Pipfile Pipfile.lock
+recursive-include audio_maffia *.py
