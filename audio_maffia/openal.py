@@ -71,7 +71,17 @@ class c_void(Structure):
 # al
 class lib_openal(object):
     def __init__(self):
-        self._lib = ctypes.CDLL(dll_name)
+        try:
+            self._lib = ctypes.CDLL(dll_name)
+        except FileNotFoundError as _err:
+            print(_err, file=sys.stderr)
+            try:
+                print(f"found {dll_name} in {os.path.abspath(dll_name)}", file=sys.stderr)
+                self._lib = ctypes.CDLL(os.path.abspath(dll_name))
+            except FileNotFoundError as _err:
+                raise FileNotFoundError(f"\r\n\t{dll_name} not found\r\n\t\tMake sure that  {dll_name} can be located in your audio-maffia directory \r\n\t\tor that OpenAL soft is installed on your operating system")
+
+
 
         self._int_types = (c_int16, c_int32)
         if hasattr(ctypes, "c_int64"):
