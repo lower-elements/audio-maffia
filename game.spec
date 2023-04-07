@@ -1,14 +1,26 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+from sys import platform
 
 block_cipher = None
 
+binaries = []
+datas = [
+	('data', 'data'),
+	('urlextract', 'urlextract'),
+]
+
+match platform:
+  case 'win32':
+	  binaries += [
+	  ('dlls_windows/*', '.'),
+	  ]
 
 a = Analysis(
     ['game.py'],
     pathex=[],
-    binaries=[],
-    datas=[('urlextract', 'urlextract')],
+    binaries=binaries,
+    datas=datas,
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
