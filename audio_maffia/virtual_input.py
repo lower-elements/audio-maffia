@@ -4,7 +4,7 @@ from random import randint as random
 from . import consts, options
 
 import pygame
-import pyperclip
+from pygame import scrap
 from .speech import speak
 import re
 
@@ -45,6 +45,8 @@ class Virtual_input:
         self._key_times = {}
         self.initial_key_repeating_time = kwargbs.get("repeat_first_ms", 500)
         self.repeating_increment = kwargbs.get("repeat_second_ms", 50)
+
+        scrap.init()
 
     def toggle_character_repetition(self):
         if self.repeating_characters == False:
@@ -508,10 +510,15 @@ class Virtual_input:
                     self.line_num = 0
                 elif event.key == pygame.K_c and event.mod & pygame.KMOD_CTRL:
                     speak("coppied: " + self.selection)
-                    pyperclip.copy(self.selection)
+                    scrap.put('text/plain;charset=utf-8', self.selection.encode('utf-8'))
                 elif event.key == pygame.K_v and event.mod & pygame.KMOD_CTRL:
-                    speak("text pasted from clipboard")
-                    self.insert_character(pyperclip.paste())
+                    for content_type in scrap.get_types():
+                        if content_type.startswith('text/plain'):
+                            # Hacky hacky hacky, but likely to work basically always
+                            encoding = content_type.split('=')[-1]
+                            text = scrap.get(content_type).decode(encoding)
+                            speak("text pasted from clipboard")
+                            self.insert_character(text)
                 elif event.key == pygame.K_F1:
                     speak("Word echo on") if self.toggle_word_repetition() else speak(
                         "word echo off"

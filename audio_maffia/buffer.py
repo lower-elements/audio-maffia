@@ -5,7 +5,7 @@ from time import localtime, strftime
 import urllib.parse as urlparse
 
 import linkpreview, urlextract
-import pyperclip
+from pygame import scrap
 
 from . import speech, time_utils, options, audio
 
@@ -269,7 +269,8 @@ def move(dir):
 
 
 def copy_item():
-    pyperclip.copy(buffers[bufferindex].items[buffers[bufferindex].index].text)
+    text = buffers[bufferindex].items[buffers[bufferindex].index].text
+    scrap.put('text/plain;charset=utf-8', text.encode('utf-8'))
     speech.speak("Copied")
 
 

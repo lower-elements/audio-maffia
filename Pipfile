@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 pygame = "*"
 cytolk = {version = "*", sys_platform = "== 'win32'"}
-pyperclip = "*"
 semver = "*"
 requests = "*"
 urlextract = "*"
